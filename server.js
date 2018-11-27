@@ -28,6 +28,24 @@ const Users = sequelize.define('users', {
     prenume: Sequelize.STRING
 });
 
+const User_preferences = sequelize.define('user_preferences',{
+    id_user: Sequelize.STRING,
+    gen_preferat: Sequelize.STRING,
+    autor_preferat: Sequelize.STRING
+});
+
+const Reviews = sequelize.define('reviews',{
+    id_user: Sequelize.STRING,
+    id_carte: Sequelize.STRING,
+    recenzie: Sequelize.STRING
+})
+
+const Best_seller = sequelize.define('best_sellers',{
+    id_autor: Sequelize.STRING,
+    id_best_seller: Sequelize.STRING,
+    nume_best_seller: Sequelize.STRING
+})
+
 app.get('/createdb', (request, response) => {
     sequelize.sync({force:true}).then(() => {
         response.status(200).send('tables created')
@@ -36,6 +54,22 @@ app.get('/createdb', (request, response) => {
         response.status(200).send('could not create tables')
     })
 })
+
+
+
+
+app.get('/best_sellers', (request, response) => {
+    Best_seller.findAll().then((best_sellers)=>{
+        response.status(200).json(best_sellers)
+    })
+})
+
+app.post('/best_sellers', (request, response) => {
+    Best_seller.create(request.body).then((best_sellers)=>{
+        response.status(201).json(best_sellers)
+    })
+})
+
 
 
 app.listen(8080)
